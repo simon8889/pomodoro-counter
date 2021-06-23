@@ -4,29 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lato&display=swap" rel="stylesheet">
     <title>pomodoro counter</title>
 </head>
 <body>
-    <h1>Pomodoro Counter</h1>
-    <div id="vm">
-        <div v-if="states[stateIndex] === 'startWork'">
-            <p>startwork</p>
-            <button @click="uploadState">work</button>
+    <div id="vm" class="app">
+        <h1>Pomodoro Counter: {{pomodoroCounter}}</h1>
+        <div class="container" v-bind:style="{ background: backColor }">
+            <div v-if="states[stateIndex] === 'work'" class="timer">
+                <h2>Work Time</h2>
+                <p>{{ minuteTime }}</p>
+                <button @click="uploadState">Take Break</button>
+                <div class="loader">
+                    <div v-bind:style="{ width: divWidth }"></div>
+                </div>
+            </div>
+            <div v-else-if="states[stateIndex] === 'break'" class="timer">
+                <h2>Break Time</h2>
+                <p>{{ minuteTime }}</p>
+                <button @click="uploadState">Start Work</button>
+                <div class="loader">
+                    <div v-bind:style="{ width: divWidth }"></div>
+                </div>
+            </div>
+            <div v-else class="timer">
+                <h2>Start Work</h2>
+                <button @click="uploadState">Start</button>
+            </div>
         </div>
-        <div v-else-if="states[stateIndex] === 'work'">
-            <p>work</p>
-            <button @click="uploadState">startBreak</button>
-        </div>
-        <div v-else-if="states[stateIndex] === 'startBreak'">
-            <p>startBreak</p>
-            <button @click="uploadState">break</button>
-        </div>
-        <div v-else-if="states[stateIndex] === 'break'">
-            <p>break</p>
-            <button @click="uploadState">startWork</button>
-        </div>
+        <button class="soundSwitch" @click="changeSound">Sound: {{ soundState ? "Yes" : "No"}}</button>
+        <audio id="alarm">
+            <source src="./alarm.wav" type="audio/wav">
+        </audio>
     </div>
-    
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="./script.js"></script>
 </body>
